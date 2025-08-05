@@ -1,12 +1,23 @@
-﻿export default async function handler(req, res) {
-    if (req.method !== 'POST') {
+﻿export default async function handler(req, res) 
+{
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') 
+    {
+        return res.status(200).end();
+    }
+
+    if (req.method !== 'POST') 
+    {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     const { name, score } = req.body;
 
-    // Validation
-    if (!name || score === undefined || score < 0 || name.trim().length === 0) {
+    if (!name || score === undefined || score < 0 || name.trim().length === 0) 
+    {
         return res.status(400).json({ error: 'Invalid data: name and score are required' });
     }
 
@@ -14,26 +25,32 @@
     const SUPABASE_KEY = process.env.SUPABASE_KEY;
     const cleanName = name.trim().substring(0, 50);
 
-    try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/scores`, {
+    try 
+    {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/scores`, 
+        {
             method: 'POST',
-            headers: {
+            headers: 
+            {
                 'Content-Type': 'application/json',
                 'apikey': SUPABASE_KEY,
                 'Authorization': `Bearer ${SUPABASE_KEY}`
             },
-            body: JSON.stringify({ name: cleanName, score })
+            body: JSON.stringify({ name, score })
         });
 
-        if (response.ok) {
+        if (response.ok) 
+        {
             res.status(200).json({ success: true, message: 'Score submitted successfully' });
-        } else {
+        } 
+        else 
+        {
             const error = await response.text();
-            console.error('Supabase error:', error);
-            res.status(500).json({ error: 'Failed to save score' });
+            res.status(500).json({ error: 'Failed to save score', details: error });
         }
-    } catch (err) {
-        console.error('Server error:', err);
-        res.status(500).json({ error: 'Internal server error' });
+    } 
+    catch (err) 
+    {
+        res.status(500).json({ error: 'Server error', details: err.message });
     }
 }
