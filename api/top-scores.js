@@ -1,5 +1,24 @@
 ﻿export default async function handler(req, res) 
 {
+  const allowedOrigins = 
+  [
+    'https://cyber-dog-run.vercel.app',
+    'https://cyber-dog-run-git-main-slevichs-projects.vercel.app'
+  ];
+
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) 
+  {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') 
+  {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'GET') 
   {
     return res.status(405).json({ error: 'Method not allowed' });
