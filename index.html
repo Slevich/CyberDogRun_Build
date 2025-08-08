@@ -1,182 +1,66 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Dog Run</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #0a1128;
-            color: white;
-            text-align: center;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #5271ff;
-            margin-bottom: 20px;
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            color: #ccc;
-        }
-
-        #playGameBtn {
-            padding: 16px 32px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: white;
-            background-color: #5271ff;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(82, 113, 255, 0.4);
-            transition: all 0.2s;
-        }
-
-        #playGameBtn:hover {
-            background-color: #405edc;
-            transform: translateY(-2px);
-        }
-
-        /* Попап (модальное окно) */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            position: relative;
-            width: 90vw;
-            height: 90vh;
-            max-width: 1200px;
-            max-height: 800px;
-            background-color: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-        }
-
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: white;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 36px;
-            height: 36px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 50%;
-            text-align: center;
-            line-height: 32px;
-            z-index: 10;
-            transition: background 0.2s;
-        }
-
-        .close:hover {
-            background-color: rgba(255, 0, 0, 0.7);
-        }
-
-        #gameFrame {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background-color: #000;
-        }
-
-        /* Мобильная адаптация */
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 2rem;
-            }
-
-            .tagline {
-                font-size: 1rem;
-            }
-
-            .modal-content {
-                width: 100vw;
-                height: 100vh;
-                border-radius: 0;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/game/TemplateData/style.css">
 </head>
 <body>
 
-    <!-- Лендинг -->
-    <div class="landing">
-        <div class="logo">🎮 Cyber Dog Run</div>
-        <p class="tagline">Jump to live!</p>
-        <button id="playGameBtn">Play</button>
-    </div>
-
-    <!-- Попап с игрой -->
-    <div id="gameModal" class="modal">
-        <div class="modal-content">
-            <span id="closeModal" class="close">&times;</span>
-            <iframe
-                id="gameFrame"
-                src="/game"
-                frameborder="0"
-                allowfullscreen
-                allow="fullscreen"
-                loading="lazy">
-            </iframe>
+    <div id="unity-container" style="width: 100%; height: 100%; position: absolute">
+        <canvas id="unity-canvas" style="width: 100%; height: 100%; display: block"></canvas>
+        <div id="unity-loading-bar">
+            <div id="unity-logo"></div>
+            <div id="unity-progress-bar-empty">
+                <div id="unity-progress-bar-full"></div>
+            </div>
+        </div>
+        <div id="unity-mobile-warning" style="display: none">
+            <div>Touch controls are not available.<br>Please use a keyboard and mouse.</div>
+        </div>
+        <div id="unity-footer" style="display: none">
+            <div id="unity-webgl-logo"></div>
+            <div id="unity-fullscreen-button"></div>
+            <div id="unity-build-title">Cyber Dog Run</div>
         </div>
     </div>
 
-    <!-- Скрипт для управления попапом -->
+    <script src="/game/Build/game.loader.js"></script>
+    
     <script>
-        const playBtn = document.getElementById('playGameBtn');
-        const modal = document.getElementById('gameModal');
-        const closeBtn = document.getElementById('closeModal');
-        const gameFrame = document.getElementById('gameFrame');
+        var container = document.querySelector("#unity-container");
+        var canvas = document.querySelector("#unity-canvas");
+        var loadingBar = document.querySelector("#unity-loading-bar");
+        var progressBarFull = document.querySelector("#unity-progress-bar-full");
+        var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+        var mobileWarning = document.querySelector("#unity-mobile-warning");
 
-        // Открыть попап
-        playBtn.onclick = function () {
-            modal.style.display = 'flex';
-        };
+        // Show the mobile warning if on a mobile device
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            mobileWarning.style.display = "block";
+        }
 
-        // Закрыть попап
-        closeBtn.onclick = function () {
-            modal.style.display = 'none';
-            gameFrame.src = gameFrame.src;
-        };
+        // Create Unity instance
+        createUnityInstance(canvas, {
+            dataUrl: "/game/Build/game.data",
+            frameworkUrl: "/game/Build/game.framework.js",
+            codeUrl: "/game/Build/game.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "Slevich",
+            productName: "Cyber Dog Run",
+            productVersion: "1.0",
+        }, (progress) => {
+            progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+            loadingBar.style.display = "none";
 
-        // Закрыть по клику на фон
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        };
+            fullscreenButton.onclick = () => {
+                unityInstance.SetFullscreen(1);
+            };
+        }).catch((errorMessage) => {
+            alert(errorMessage);
+        });
     </script>
-
 </body>
 </html>
