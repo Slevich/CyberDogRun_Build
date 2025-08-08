@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Dog Run</title>
-    <link rel="stylesheet" href="/game/TemplateData/style.css">
+    <link rel="stylesheet" href="public/game/TemplateData/style.css">
 </head>
 <body>
 
@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <script src="/game/Build/game.loader.js"></script>
+    <script src="public/game/Build/game.loader.js"></script>
     
     <script>
         var container = document.querySelector("#unity-container");
@@ -43,9 +43,9 @@
 
         // Create Unity instance
         createUnityInstance(canvas, {
-            dataUrl: "/game/Build/game.data",
-            frameworkUrl: "/game/Build/game.framework.js",
-            codeUrl: "/game/Build/game.wasm",
+            dataUrl: "public/game/Build/game.data",
+            frameworkUrl: "public/game/Build/game.framework.js",
+            codeUrl: "public/game/Build/game.wasm",
             streamingAssetsUrl: "StreamingAssets",
             companyName: "Slevich",
             productName: "Cyber Dog Run",
