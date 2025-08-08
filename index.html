@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Dog Run</title>
-    <link rel="stylesheet" href="public/game/TemplateData/style.css">
+    <link rel="stylesheet" href="/TemplateData/style.css">
 </head>
 <body>
 
@@ -36,12 +36,10 @@
         var fullscreenButton = document.querySelector("#unity-fullscreen-button");
         var mobileWarning = document.querySelector("#unity-mobile-warning");
 
-        // Show the mobile warning if on a mobile device
         if (/Mobi|Android/i.test(navigator.userAgent)) {
             mobileWarning.style.display = "block";
         }
 
-        // Create Unity instance
         createUnityInstance(canvas, {
             dataUrl: "/Build/game.data",
             frameworkUrl: "/Build/game.framework.js",
@@ -49,7 +47,7 @@
             streamingAssetsUrl: "StreamingAssets",
             companyName: "Slevich",
             productName: "Cyber Dog Run",
-            productVersion: "1.0",
+            productVersion: "1.0"
         }, (progress) => {
             progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
@@ -59,7 +57,7 @@
                 unityInstance.SetFullscreen(1);
             };
         }).catch((errorMessage) => {
-            alert(errorMessage);
+            alert("Loading error: " + errorMessage);
         });
     </script>
 </body>
