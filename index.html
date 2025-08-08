@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <title>Cyber Dog Run</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a1128;
+            color: white;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #5271ff;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #ccc;
+        }
+
+        #playGameBtn {
+            padding: 16px 32px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            background-color: #5271ff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(82, 113, 255, 0.4);
+            transition: all 0.2s;
+        }
+
+        #playGameBtn:hover {
+            background-color: #405edc;
+            transform: translateY(-2px);
+        }
+
+        /* Попап (модальное окно) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90vw;
+            height: 90vh;
+            max-width: 1200px;
+            max-height: 800px;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            z-index: 10;
+            transition: background 0.2s;
+        }
+
+        .close:hover {
+            background-color: rgba(255, 0, 0, 0.7);
+        }
+
+        #gameFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: #000;
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .modal-content {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Лендинг -->
+    <div class="landing">
+        <div class="logo">🎮 Cyber Dog Run</div>
+        <p class="tagline">Jump to live!</p>
+        <button id="playGameBtn">Play</button>
+    </div>
+
+    <!-- Попап с игрой -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <iframe
+                id="gameFrame"
+                src="/game"
+                frameborder="0"
+                allowfullscreen
+                allow="fullscreen"
+                loading="lazy">
+            </iframe>
+        </div>
+    </div>
+
+    <!-- Скрипт для управления попапом -->
+    <script>
+        const playBtn = document.getElementById('playGameBtn');
+        const modal = document.getElementById('gameModal');
+        const closeBtn = document.getElementById('closeModal');
+        const gameFrame = document.getElementById('gameFrame');
+
+        // Открыть попап
+        playBtn.onclick = function () {
+            modal.style.display = 'flex';
+        };
+
+        // Закрыть попап
+        closeBtn.onclick = function () {
+            modal.style.display = 'none';
+            gameFrame.src = gameFrame.src;
+        };
+
+        // Закрыть по клику на фон
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+    </script>
+
+</body>
+</html>
