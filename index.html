@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cyber dog run</title>
 <style>
-    body {
+    body 
+    {
         font-family: Arial, sans-serif;
-        background: #0f0f0f;
+        background: #003366;
         color: white;
         display: flex;
         flex-direction: column;
@@ -17,119 +18,126 @@
         margin: 0;
     }
 
-    /* Logo */
-    .logo {
+    .logo 
+    {
         max-width: 200px;
         margin-bottom: 30px;
         cursor: pointer;
         transition: transform 0.3s ease;
     }
-    .logo:hover {
+    .logo:hover 
+    {
         transform: scale(1.05);
     }
 
     /* Button */
-    .play-btn {
-        padding: 15px 30px;
-        font-size: 18px;
-        background: #ff3366;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        color: white;
-        transition: background 0.3s ease;
+    .play-btn 
+    {
+      padding: 20px 50px;
+      font-size: 24px;
+      background: #ff3366;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      transition: background 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(255, 51, 102, 0.5);
     }
-    .play-btn:hover {
-        background: #ff5580;
-    }
-
-    /* Modal */
-    .modal {
-        display: none; 
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.85);
-        align-items: center;
-        justify-content: center;
+    .play-btn:hover 
+    {
+      background: #ff5580;
+      box-shadow: 0 6px 15px rgba(255, 85, 128, 0.7);
     }
 
-    /* Modal content */
-    .modal-content {
-        background: #000;
-        border-radius: 10px;
-        overflow: hidden;
-        position: relative;
-        width: 90%;
-        max-width: 1000px;
-        height: 80%;
+    .modal 
+    {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* iframe */
-    .modal-content iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
+    .modal-content 
+    {
+      position: relative;
+      width: 90vw;
+      max-width: 1200px;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 10px;
+      overflow: hidden;
     }
 
-    /* Close button */
-    .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 24px;
-        color: white;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        z-index: 10;
-    }
-    .close-btn:hover {
-        color: #ff3366;
+    .modal-content iframe 
+    {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
 
-    /* Mobile full-screen */
-    @media (max-width: 768px) {
-        .modal-content {
-            width: 100%;
-            height: 100%;
-            border-radius: 0;
-        }
+    .close-btn 
+    {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 24px;
+      color: white;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .close-btn:hover 
+    {
+      color: #ff3366;
+    }
+
+    @media (max-width: 600px) 
+    {
+      .modal-content 
+      {
+        width: 95vw;
+        aspect-ratio: 16 / 9;
+        border-radius: 0;
+        height: auto;
+        max-height: 90vh;
+      }
     }
 </style>
 </head>
 <body>
 
-<!-- Logo -->
 <a href="https://cyber-dog-run.vercel.app">
     <img src="logo.png" alt="Game Logo" class="logo">
 </a>
 
-<!-- Button -->
 <button class="play-btn" onclick="openModal()">Play</button>
 
-<!-- Modal -->
 <div class="modal" id="gameModal">
     <div class="modal-content">
         <button class="close-btn" onclick="closeModal()">✖</button>
-        <!-- Unity game -->
         <iframe id="gameFrame" src=""></iframe>
     </div>
 </div>
 
 <script>
-function openModal() {
+function openModal() 
+{
     document.getElementById("gameModal").style.display = "flex";
     // Load Unity build
     document.getElementById("gameFrame").src = "public/game/index.html";
 }
 
-function closeModal() {
+function closeModal() 
+{
     document.getElementById("gameModal").style.display = "none";
-    document.getElementById("gameFrame").src = ""; // unload game
+    document.getElementById("gameFrame").src = "";
 }
 </script>
 
