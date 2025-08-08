@@ -1,9 +1,9 @@
 const cacheName = "DefaultCompany-Cyber_Dog_Run-1.0";
 const contentToCache = [
     "Build/public.loader.js",
-    "Build/public.framework.js",
-    "Build/public.data",
-    "Build/public.wasm",
+    "Build/public.framework.js.unityweb",
+    "Build/public.data.unityweb",
+    "Build/public.wasm.unityweb",
     "TemplateData/style.css"
 
 ];
